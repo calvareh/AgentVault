@@ -1,0 +1,20 @@
+flowchart LR
+    A[AI Agent] --> B[Authentication Service]
+    B --> C[Policy Engine]
+    C --> D{Action Risk Level}
+
+    D -->|Low Risk| E[Action Execution Layer]
+    D -->|High Risk| F[Human Approval Workflow]
+    F --> E
+
+    E --> G[Audit Log]
+    C --> G
+    F --> G
+
+    H[Agent Registry] --> B
+    H --> C
+
+    G --> I[Security Dashboard]
+
+    J[Terraform Managed Cloud Layer] -. Phase 2 .-> G
+    J -. Phase 2 .-> I
