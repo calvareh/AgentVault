@@ -2,6 +2,8 @@
 
 ## Secure Identity Governance for Autonomous AI Agents
 
+![AgentVault Architecture](diagrams/AgentVault_Architecture_v1.png)
+
 AgentVault is a cybersecurity lab that demonstrates how autonomous AI agents can be managed securely using identity governance, least privilege access, policy enforcement, approval workflows, and audit logging.
 
 The project simulates multiple AI agents performing tasks within a controlled environment where every action is authenticated, authorized, monitored, and recorded.

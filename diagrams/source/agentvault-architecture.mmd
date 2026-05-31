@@ -1,20 +1,46 @@
-flowchart LR
-    A[AI Agent] --> B[Authentication Service]
-    B --> C[Policy Engine]
-    C --> D{Action Risk Level}
+flowchart TB
+classDef security fill:#f8f8f8,stroke:#333,stroke-width:2px;
 
-    D -->|Low Risk| E[Action Execution Layer]
-    D -->|High Risk| F[Human Approval Workflow]
-    F --> E
+    A[AI Agent]
 
-    E --> G[Audit Log]
-    C --> G
+    subgraph Identity_and_Access
+        B[Agent Registry]
+        C[Authentication Service]
+        D[Policy Engine]
+    end
+
+    subgraph Governance
+        E{Action Risk Level}
+        F[Human Approval Workflow]
+    end
+
+    subgraph Operations
+        G[Action Execution Layer]
+        H[Audit Log]
+        I[Security Dashboard]
+    end
+
+    subgraph Future_Cloud_Layer
+        J[Terraform Managed Cloud Resources]
+    end
+
+    A --> C
+    B --> C
+    B --> D
+
+    C --> D
+    D --> E
+
+    E -->|Low Risk| G
+    E -->|High Risk| F
+
     F --> G
 
-    H[Agent Registry] --> B
-    H --> C
+    G --> H
+    D --> H
+    F --> H
 
-    G --> I[Security Dashboard]
+    H --> I
 
-    J[Terraform Managed Cloud Layer] -. Phase 2 .-> G
+    J -. Phase 2 .-> H
     J -. Phase 2 .-> I
