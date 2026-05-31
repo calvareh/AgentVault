@@ -53,5 +53,9 @@ agents = [
     )
 ]
 
+print("\n=== REGISTERED AGENTS ===\n")
+
 for agent in agents:
     print(agent)
+
+print(f"\nTotal Agents Registered: {len(agents)}")
