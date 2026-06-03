@@ -7,6 +7,19 @@ import streamlit as st
 AGENT_REGISTRY_PATH = Path("data/agents.json")
 AUDIT_LOG_PATH = Path("data/agentvault_engine_audit.jsonl")
 
+RISK_LEVEL_SCORES = {
+    "LOW": 20,
+    "MEDIUM": 50,
+    "HIGH": 80,
+}
+
+
+def calculate_agent_risk_score(agent):
+    base_score = RISK_LEVEL_SCORES.get(agent["risk_level"], 0)
+    permission_score = len(agent["permissions"]) * 5
+
+    return min(base_score + permission_score, 100)
+
 st.set_page_config(
     page_title="AgentVault Dashboard",
     layout="wide"
@@ -66,6 +79,7 @@ agent_inventory = [
         "Name": agent["name"],
         "Role": agent["role"],
         "Risk Level": agent["risk_level"],
+        "Risk Score": calculate_agent_risk_score(agent),
         "Permissions": ", ".join(agent["permissions"]),
     }
     for agent in registered_agents
