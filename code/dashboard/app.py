@@ -119,6 +119,30 @@ risk_chart_data = [
     for risk, count in risk_summary.items()
 ]
 
+st.subheader("High Risk Agents")
+
+high_risk_agents = [
+    {
+        "Agent ID": agent["agent_id"],
+        "Role": agent["role"],
+        "Risk Score": calculate_agent_risk_score(agent),
+    }
+    for agent in registered_agents
+    if calculate_agent_risk_score(agent) >= 80
+]
+
+if high_risk_agents:
+    st.warning(
+        f"{len(high_risk_agents)} high-risk agents require enhanced governance oversight."
+    )
+
+    st.dataframe(
+        high_risk_agents,
+        use_container_width=True
+    )
+else:
+    st.success("No high-risk agents detected.")
+
 st.bar_chart(risk_chart_data, x="Risk Level", y="Agent Count")
 
 st.subheader("Audit Events")
