@@ -49,7 +49,7 @@ active_agent_roles = set(event["agent"] for event in events)
 
 inactive_agents = [
     agent for agent in registered_agents
-    if agent["role"] not in active_agent_roles
+    if agent["status"] == "INACTIVE"
 ]
 
 st.subheader("Governance Summary")
@@ -80,6 +80,7 @@ agent_inventory = [
         "Role": agent["role"],
         "Risk Level": agent["risk_level"],
         "Risk Score": calculate_agent_risk_score(agent),
+        "Status": agent["status"],
         "Permissions": ", ".join(agent["permissions"]),
     }
     for agent in registered_agents
@@ -90,7 +91,9 @@ st.dataframe(agent_inventory, use_container_width=True)
 st.subheader("Inactive Agents")
 
 if inactive_agents:
-    st.warning("The following registered agents have no audit activity yet:")
+    st.warning(
+    "The following registered agents are currently inactive and cannot request access."
+)
 
     inactive_agent_table = [
         {
@@ -98,6 +101,7 @@ if inactive_agents:
             "Name": agent["name"],
             "Role": agent["role"],
             "Risk Level": agent["risk_level"],
+            "Status": agent["status"],
         }
         for agent in inactive_agents
     ]
