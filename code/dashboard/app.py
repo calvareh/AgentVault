@@ -32,6 +32,13 @@ with open(AGENT_REGISTRY_PATH, "r") as file:
 registered_agent_count = len(registered_agents)
 active_agent_count = len(set(event["agent"] for event in events))
 
+active_agent_roles = set(event["agent"] for event in events)
+
+inactive_agents = [
+    agent for agent in registered_agents
+    if agent["role"] not in active_agent_roles
+]
+
 st.subheader("Governance Summary")
 
 col1, col2, col3, col4, col5 = st.columns(5)
@@ -64,8 +71,27 @@ agent_inventory = [
     for agent in registered_agents
 ]
 
-st.dataframe(agent_inventory)
+st.dataframe(agent_inventory, use_container_width=True)
+
+st.subheader("Inactive Agents")
+
+if inactive_agents:
+    st.warning("The following registered agents have no audit activity yet:")
+
+    inactive_agent_table = [
+        {
+            "Agent ID": agent["agent_id"],
+            "Name": agent["name"],
+            "Role": agent["role"],
+            "Risk Level": agent["risk_level"],
+        }
+        for agent in inactive_agents
+    ]
+
+    st.dataframe(inactive_agent_table, use_container_width=True)
+else:
+    st.success("All registered agents have audit activity.")
 
 st.subheader("Audit Events")
 
-st.dataframe(events)
+st.dataframe(events, use_container_width=True)
