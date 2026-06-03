@@ -1,0 +1,6 @@
+{"timestamp": "2026-06-02 20:32:00", "agent": "CloudAgent", "action": "create_ticket", "risk": "LOW", "decision": "ALLOWED"}
+{"timestamp": "2026-06-02 20:32:00", "agent": "CloudAgent", "action": "delete_server", "risk": "HIGH", "decision": "DENIED"}
+{"timestamp": "2026-06-02 20:32:00", "agent": "SecurityAgent", "action": "read_logs", "risk": "MEDIUM", "decision": "ALLOWED"}
+{"timestamp": "2026-06-02 20:32:00", "agent": "SecurityAgent", "action": "modify_iam_policy", "risk": "HIGH", "decision": "APPROVAL REQUIRED"}
+{"timestamp": "2026-06-02 20:32:00", "agent": "IdentityAgent", "action": "review_access", "risk": "MEDIUM", "decision": "ALLOWED"}
+{"timestamp": "2026-06-02 20:32:00", "agent": "ComplianceAgent", "action": "generate_reports", "risk": "MEDIUM", "decision": "ALLOWED"}
