@@ -4,34 +4,39 @@
       "name": "Security Review Agent",
       "role": "SecurityAgent",
       "permissions": ["read_logs", "approve_changes", "modify_iam_policy"],
-      "risk_level": "HIGH"
+      "risk_level": "HIGH",
+      "status": "ACTIVE"
     },
     {
       "agent_id": "CLD-001",
       "name": "Cloud Operations Agent",
       "role": "CloudAgent",
       "permissions": ["read_cloud_config", "create_ticket"],
-      "risk_level": "MEDIUM"
+      "risk_level": "MEDIUM",
+      "status": "ACTIVE"
     },
     {
       "agent_id": "FIN-001",
       "name": "Finance Analysis Agent",
       "role": "FinanceAgent",
       "permissions": ["read_reports"],
-      "risk_level": "LOW"
+      "risk_level": "LOW",
+      "status": "INACTIVE"
     },
     {
       "agent_id": "IAM-001",
       "name": "Identity Governance Agent",
       "role": "IdentityAgent",
       "permissions": ["review_access", "certify_access", "read_identity_data"],
-      "risk_level": "HIGH"
+      "risk_level": "HIGH",
+      "status": "ACTIVE"
     },
     {
       "agent_id": "CMP-001",
       "name": "Compliance Monitoring Agent",
       "role": "ComplianceAgent",
       "permissions": ["read_audit_logs", "generate_reports", "check_controls"],
-      "risk_level": "MEDIUM"
+      "risk_level": "MEDIUM",
+      "status": "ACTIVE"
     }
   ]

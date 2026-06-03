@@ -10,7 +10,7 @@ def load_agents():
         agent_list = json.load(file)
 
     return {
-        agent["role"]: agent["permissions"]
+        agent["role"]: agent
         for agent in agent_list
     }
 
@@ -31,7 +31,15 @@ action_risk = {
 
 
 def evaluate_request(agent_name, action):
-    permissions = agents.get(agent_name, [])
+    agent = agents.get(agent_name)
+
+    if not agent:
+        return "UNKNOWN", "DENIED"
+
+    if agent["status"] != "ACTIVE":
+        return "UNKNOWN", "DENIED"
+
+    permissions = agent["permissions"]
     risk = action_risk.get(action, "UNKNOWN")
 
     if action not in permissions:
@@ -67,6 +75,7 @@ requests = [
     ("SecurityAgent", "modify_iam_policy"),
     ("IdentityAgent", "review_access"),
     ("ComplianceAgent", "generate_reports"),
+    ("FinanceAgent", "read_reports"),
 ]
 
 print("\n=== AGENTVAULT DECISION ENGINE ===\n")
