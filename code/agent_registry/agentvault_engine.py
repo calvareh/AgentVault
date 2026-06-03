@@ -5,13 +5,17 @@ import os
 
 AUDIT_LOG_FILE = "data/agentvault_engine_audit.jsonl"
 
-agents = {
-    "CloudAgent": ["read_cloud_config", "create_ticket"],
-    "SecurityAgent": ["read_logs", "approve_changes", "modify_iam_policy"],
-    "FinanceAgent": ["read_reports"],
-    "IdentityAgent": ["review_access", "certify_access", "read_identity_data"],
-    "ComplianceAgent": ["read_audit_logs", "generate_reports", "check_controls"],
-}
+def load_agents():
+    with open("data/agents.json", "r") as file:
+        agent_list = json.load(file)
+
+    return {
+        agent["role"]: agent["permissions"]
+        for agent in agent_list
+    }
+
+
+agents = load_agents()
 
 action_risk = {
     "create_ticket": "LOW",
