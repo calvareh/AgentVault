@@ -92,6 +92,21 @@ if inactive_agents:
 else:
     st.success("All registered agents have audit activity.")
 
+st.subheader("Agent Risk Summary")
+
+risk_summary = {}
+
+for agent in registered_agents:
+    risk = agent["risk_level"]
+    risk_summary[risk] = risk_summary.get(risk, 0) + 1
+
+risk_chart_data = [
+    {"Risk Level": risk, "Agent Count": count}
+    for risk, count in risk_summary.items()
+]
+
+st.bar_chart(risk_chart_data, x="Risk Level", y="Agent Count")
+
 st.subheader("Audit Events")
 
 st.dataframe(events, use_container_width=True)
