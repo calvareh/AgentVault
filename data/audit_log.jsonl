@@ -1,0 +1,4 @@
+{"timestamp": "2026-06-02 20:22:44", "agent": "CloudAgent", "action": "delete_server", "decision": "DENIED"}
+{"timestamp": "2026-06-02 20:26:26", "agent": "CloudAgent", "action": "create_ticket", "decision": "ALLOWED"}
+{"timestamp": "2026-06-02 20:26:26", "agent": "CloudAgent", "action": "delete_server", "decision": "DENIED"}
+{"timestamp": "2026-06-02 20:26:26", "agent": "SecurityAgent", "action": "modify_iam_policy", "decision": "APPROVAL REQUIRED"}
