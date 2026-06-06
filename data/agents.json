@@ -13,7 +13,13 @@
       "role": "CloudAgent",
       "permissions": ["read_cloud_config", "create_ticket"],
       "risk_level": "MEDIUM",
-      "status": "ACTIVE"
+      "status": "ACTIVE",
+      "cloud_identity": {
+        "provider": "AWS",
+        "role_name": "agentvault-cloud-agent-role",
+        "role_arn": "arn:aws:iam::851725204215:role/agentvault-cloud-agent-role",
+        "managed_by": "Terraform"
+      }
     },
     {
       "agent_id": "FIN-001",
