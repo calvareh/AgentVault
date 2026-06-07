@@ -14,6 +14,7 @@
       "permissions": ["read_cloud_config", "create_ticket"],
       "risk_level": "MEDIUM",
       "status": "ACTIVE",
+      "cloud_permissions_profile": "READ_ONLY",
       "cloud_identity": {
         "provider": "AWS",
         "role_name": "agentvault-cloud-agent-role",
