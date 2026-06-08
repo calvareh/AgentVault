@@ -20,6 +20,26 @@ def calculate_agent_risk_score(agent):
 
     return min(base_score + permission_score, 100)
 
+def evaluate_compliance_status(agent):
+    sensitive_permissions = {"modify_iam_policy", "approve_changes"}
+
+    has_cloud_identity = "cloud_identity" in agent
+    has_permissions_profile = "cloud_permissions_profile" in agent
+    has_sensitive_permissions = bool(
+        sensitive_permissions.intersection(set(agent["permissions"]))
+    )
+
+    if agent["status"] == "INACTIVE" and has_cloud_identity:
+        return "NON-COMPLIANT"
+
+    if has_cloud_identity and not has_permissions_profile:
+        return "NON-COMPLIANT"
+
+    if agent["risk_level"] == "HIGH" or has_sensitive_permissions:
+        return "REVIEW REQUIRED"
+
+    return "COMPLIANT"
+
 st.set_page_config(
     page_title="AgentVault Dashboard",
     layout="wide"
@@ -52,15 +72,38 @@ inactive_agents = [
     if agent["status"] == "INACTIVE"
 ]
 
+compliant_count = 0
+review_required_count = 0
+non_compliant_count = 0
+
+for agent in registered_agents:
+    compliance_status = evaluate_compliance_status(agent)
+
+    if compliance_status == "COMPLIANT":
+        compliant_count += 1
+    elif compliance_status == "REVIEW REQUIRED":
+        review_required_count += 1
+    elif compliance_status == "NON-COMPLIANT":
+        non_compliant_count += 1
+
+governance_score = round(
+    (compliant_count / registered_agent_count) * 100,
+    1
+)
+
 st.subheader("Governance Summary")
 
-col1, col2, col3, col4, col5 = st.columns(5)
+col1, col2, col3, col4, col5, col6, col7, col8, col9 = st.columns(9)
 
 col1.metric("Registered Agents", registered_agent_count)
 col2.metric("Active Agents", active_agent_count)
 col3.metric("Allowed", decision_counts.get("ALLOWED", 0))
 col4.metric("Denied", decision_counts.get("DENIED", 0))
 col5.metric("Approval Required", decision_counts.get("APPROVAL REQUIRED", 0))
+col6.metric("Compliant", compliant_count)
+col7.metric("Review Required", review_required_count)
+col8.metric("Non-Compliant", non_compliant_count)
+col9.metric("Governance Score", f"{governance_score}%")
 
 st.subheader("Decision Distribution")
 
@@ -81,6 +124,7 @@ agent_inventory = [
         "Risk Level": agent["risk_level"],
         "Risk Score": calculate_agent_risk_score(agent),
         "Status": agent["status"],
+        "Compliance Status": evaluate_compliance_status(agent),
         "Permissions Profile": agent.get("cloud_permissions_profile", "N/A"),
         "Cloud Provider": agent.get("cloud_identity", {}).get("provider", "N/A"),
         "Cloud Role": agent.get("cloud_identity", {}).get("role_name", "N/A"),
@@ -126,6 +170,7 @@ risk_chart_data = [
     for risk, count in risk_summary.items()
 ]
 
+
 st.subheader("High Risk Agents")
 
 high_risk_agents = [
@@ -149,6 +194,27 @@ if high_risk_agents:
     )
 else:
     st.success("No high-risk agents detected.")
+
+st.subheader("Compliance Summary")
+
+compliance_summary = {}
+
+for agent in registered_agents:
+    status = evaluate_compliance_status(agent)
+    compliance_summary[status] = compliance_summary.get(status, 0) + 1
+
+compliance_chart_data = [
+    {"Compliance Status": status, "Agent Count": count}
+    for status, count in compliance_summary.items()
+]
+
+st.bar_chart(
+    compliance_chart_data,
+    x="Compliance Status",
+    y="Agent Count"
+)
+
+st.subheader("Agent Risk Summary")
 
 st.bar_chart(risk_chart_data, x="Risk Level", y="Agent Count")
 
