@@ -81,11 +81,14 @@ agent_inventory = [
         "Risk Level": agent["risk_level"],
         "Risk Score": calculate_agent_risk_score(agent),
         "Status": agent["status"],
+        "Permissions Profile": agent.get("cloud_permissions_profile", "N/A"),
+        "Cloud Provider": agent.get("cloud_identity", {}).get("provider", "N/A"),
+        "Cloud Role": agent.get("cloud_identity", {}).get("role_name", "N/A"),
+        "Managed By": agent.get("cloud_identity", {}).get("managed_by", "N/A"),
         "Permissions": ", ".join(agent["permissions"]),
     }
     for agent in registered_agents
 ]
-
 st.dataframe(agent_inventory, use_container_width=True)
 
 st.subheader("Inactive Agents")
